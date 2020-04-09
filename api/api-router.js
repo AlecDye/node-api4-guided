@@ -7,23 +7,27 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", (req, res) => {
-  res.status(200).json({ api: "up" });
+  const message = process.env.MESSAGE || "hello from localhost";
+
+  res.status(200).json({ api: "up", message });
+
+  // vist your-app-url-on-heroku/api/
 });
 
 router.get("/shouts", (req, res, next) => {
   Shouts.find()
-    .then(shouts => {
+    .then((shouts) => {
       res.status(200).json(shouts);
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
 });
 
 router.post("/shouts", (req, res, next) => {
   Shouts.add(req.body)
-    .then(shout => {
+    .then((shout) => {
       res.status(201).json(shout);
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
 });
 
 router.use(errorHandler);
